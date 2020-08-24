@@ -1,0 +1,39 @@
+{
+  "defaultPoints": [
+    {
+      "title": "Point 1",
+      "latitude": 37.79990,
+      "longitude": -122.4424
+    },
+    {
+      "title": "Point 2",
+      "latitude": 37.77990,
+      "longitude": -122.4340
+    }
+  ],
+  "defaultBooks": [
+    {
+      "title": "Waa Point 1 Book",
+      "datePosted": 1519129853500,
+      "coordinatedId": "Point 2",
+      "userId": "Point 2",
+      "pages": [
+        {
+          "title": "Hello",
+          "content": "Wallo",
+          "datePosted": 1519129853500
+        },
+        {
+          "title": "Jello",
+          "content": "Rallo",
+          "datePosted": 1519129853500
+        },
+        {
+          "title": "Wello",
+          "content": "Yallo",
+          "datePosted": 1519129853500
+        }
+      ]
+    }
+  ]
+}
