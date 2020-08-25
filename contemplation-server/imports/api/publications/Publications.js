@@ -3,8 +3,8 @@ import { Roles } from 'meteor/alanning:roles';
 import { Books } from '../schema/Books';
 
 Meteor.publish('BooksData', function publish(_id) {
-  if (this.userId) { 
-  
+  if (!_id) { 
+    console.log("no id")
   } else {
     const data = Books.find({'_id': _id})
     return data
