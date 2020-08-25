@@ -16,6 +16,15 @@ const CoordinatesSchema = new SimpleSchema({
     longitude: {
         type: Number,
         label: "Longitude of the coordinate"
+    },
+    mapId: {
+        type: String,
+        label: "Open street map id given to location"
+    },
+    booksCount: {
+        type: Number,
+        label: "Number of books at location",
+        defaultValue: 0
     }
 }, {tracker: Tracker})
 

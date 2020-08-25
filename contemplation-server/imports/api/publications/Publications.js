@@ -10,4 +10,4 @@ Meteor.publish('BooksData', function publish(_id) {
     return data
   }
   return this.ready()
-  })
+})

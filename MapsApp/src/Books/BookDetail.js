@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import Meteor, {Mongo, withTracker} from '@meteorrn/core';
 //import Books from '/contemplation-server/imports/api/schema/Books'
-import { View, Button, Text, FlatList, StyleSheet, StatusBar, SafeAreaView } from 'react-native';
+import { View, Button, Text, Dimensions, FlatList, StyleSheet, StatusBar, SafeAreaView } from 'react-native';
+import Paginator from './Paginator';
 
 const Books = new Mongo.Collection("Books");
 
 
 function BookDetail({ route, navigation, bookData }) {
+  const itemWidth = Dimensions.get('window').width;
   const [pageData, setPageData] = useState(false)
 
 console.log(bookData)
@@ -29,31 +31,34 @@ console.log(bookData)
   );
 
   const BookInfo = ({ item }) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{item.content}</Text>
+    <View style={{width: itemWidth}}>
+      <Text>{item.content}</Text>
   
     </View>
   );
 
 
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flex: 1 }}>
      
         <Text>Book Id {JSON.stringify(itemId)}</Text>
         <Button
           title="Add page"
           onPress={addPage}
         />
-      <SafeAreaView style={styles.container}>
-       {pageData[0] ?  
-      <FlatList
-        data={pageData[0].pages}
-        renderItem={renderItem}
-       
-      />
+
+       {pageData[0] ? 
+
+       <Paginator
+          data={pageData[0].pages}
+          renderItem={renderItem}
+         
+          itemWidth={itemWidth}
+        /> 
+     
     : <Text>No data</Text>
        }
-    </SafeAreaView> 
+
       </View>
     );
   }

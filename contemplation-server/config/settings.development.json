@@ -1,4 +1,48 @@
 {
+  "defaultAccounts": [
+    {
+    "email": "ishan@foo.com",
+    "password": "#eNcryptedpass1234",
+    "roles": ["member"],
+    "scope": "severna-park"
+  },
+  {
+    "email": "paxton@foo.com",
+    "password": "#eNcryptedpass1234",
+    "roles": ["member"],
+    "scope": "broadneck"
+  },
+  {
+    "email": "paxtonadmin@foo.com",
+    "password": "#eNcryptedpass1234",
+    "roles": ["super-admin"],
+    "scope": "broadneck"
+  },
+  {
+    "email": "ishanadmin@foo.com",
+    "password": "#eNcryptedpass1234",
+    "roles": ["super-admin"],
+    "scope": "severna-park"
+  },
+  {
+    "email": "ishanblog@foo.com",
+    "password": "#eNcryptedpass1234",
+    "roles": ["blogger"],
+    "scope": "severna-park"
+  },
+  {
+    "email": "paxtonblog@foo.com",
+    "password": "#eNcryptedpass1234",
+    "roles": ["blogger", "mentor"],
+    "scope": "broadneck"
+  },
+  {
+    "email": "paxtonorganizer@foo.com",
+    "password": "#eNcryptedpass1234",
+    "roles": ["organizer", "mentor"],
+    "scope": "broadneck"
+  }
+  ],
   "defaultPoints": [
     {
       "title": "Point 1",
@@ -35,5 +79,6 @@
         }
       ]
     }
-  ]
+  ],
+  "OSMKey": "BMf0tzvHncmGCtMBiGjtosydmGdBBIqg"
 }
