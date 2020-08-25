@@ -96,8 +96,8 @@ const Map = ({navigation}) => {
               <MapView.Marker
     key={point.place_id}
     coordinate={{
-      latitude: point.lat,
-      longitude: point.lon,
+      latitude: Number(point.lat),
+      longitude: Number(point.lon),
     }}
     title={point.display_name}
     onPress={() => markerClick(point)}     />

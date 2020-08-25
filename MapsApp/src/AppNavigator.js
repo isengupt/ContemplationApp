@@ -6,12 +6,14 @@ import foodList from './Foods/foodList';
 import foodForm from './Foods/foodForm';
 import BookDetailContainer from './Books/BookDetail'
 import PageForm from './Books/PageForm'
+import LoginForm from './Login/LoginForm';
 const Stack = createStackNavigator();
 
 
 const AppNavigator = () => {
     return (
     <Stack.Navigator>
+      <Stack.Screen name="login" component={LoginForm}/>
       <Stack.Screen name="map" component={Map} />
       <Stack.Screen name="createBook" component={foodForm}/>
       <Stack.Screen name="books" component={BookList}/>

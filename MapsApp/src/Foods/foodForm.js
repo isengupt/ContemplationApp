@@ -49,12 +49,7 @@ const FoodForm = ({route, navigation}) =>  {
           onPress={addBook}>
           <Text style={{ fontSize: 22, color: '#5fc9f8' }}>Submit</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={{ marginBottom: 16 }}
-          onPress={() =>
-            this.props.navigation.navigate('FoodList')}>
-          <Text style={{ fontSize: 22 }}>Go to FoodList</Text>
-        </TouchableOpacity>
+  
       </View>
     );
   
