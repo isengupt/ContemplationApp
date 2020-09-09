@@ -242,6 +242,25 @@ Meteor.methods({
     return this.userId;
   },
   getBooksAtLocation: function (_id) {
+  Books.find({ coordinateId: _id }).fetch().map((item) => {
+      console.log(item.datePosted) 
+
+      const diffTime = Math.abs(Date.now() - item.datePosted)
+
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+      if (diffDays > 14) {
+        Books.update(
+          { _id: item.coordinateId },
+          { $set: { status: "Archived" } }
+        );
+      }
+
+    })
+
+    //const diffTime = Math.abs(date2 - Data);
+    //const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+    
     return Books.find({ coordinateId: _id }).fetch();
   },
   findBookPages: function (_id) {
@@ -303,18 +322,29 @@ Meteor.methods({
         }&bounded=1`
       )
       .then((response) => {
-        let responseArr = [];
+        let responseArr = {'Tracked': [], 'Untracked': []};
         for (const item in response.data) {
           const foundItem = Coordinates.findOne({
             mapId: response.data[item].place_id,
           });
+          console.log(foundItem)
 
           if (foundItem === undefined) {
-            responseArr.push(response.data[item]);
+            console.log(response.data[item])
+            responseArr['Untracked'].push(response.data[item]);
           } else {
-            responseArr.push(foundItem);
+            responseArr['Tracked'].push(foundItem);
           }
         }
+
+     /*    var filteredArr = res.reduce(
+          (s, x) => {
+            s[(typeof(x.booksCount) !== 'undefined')].push(x);
+            return s;
+          },
+          {true: [], false: []}, */
+
+       
 
         return responseArr;
       });

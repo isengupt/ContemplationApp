@@ -18,6 +18,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Icon} from 'native-base';
+import {VictoryLine, VictoryAxis, VictoryChart, VictoryTheme} from 'victory-native';
 
 const Books = new Mongo.Collection('Books');
 var deviceWidth = Dimensions.get('window').width;
@@ -26,7 +27,7 @@ var deviceHeight = Dimensions.get('window').height;
 function BookDetail({route, navigation, bookData}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [pageData, setPageData] = useState({});
-
+  const [sentimentData, setSentimentData] = useState([]);
   console.log(bookData);
   const {itemId} = route.params;
 
@@ -46,6 +47,28 @@ function BookDetail({route, navigation, bookData}) {
       ),
     });
   }, [navigation]);
+
+  useEffect(() => {
+    console.log('timePoints', bookData)
+    const lineData = function() { 
+      if(bookData) {
+      let data = []
+      bookData.timePoints.map((datePoint) => {
+        console.log((datePoint.timeCalculated).getTime())
+        data.push({x: (datePoint.timeCalculated).getTime(), y: datePoint.score })
+      }) 
+      console.log(data)
+      return data
+    }
+     else {return []}
+    }
+    setSentimentData(lineData())
+    
+
+   /*  locationData.timePoints.map((datePoint) => {
+      console.log(String(datePoint.timeCalculated).getTime())
+    }) */
+  }, [bookData])
 
 
   useEffect(() => {
@@ -148,11 +171,42 @@ function BookDetail({route, navigation, bookData}) {
         </Modal>
 
       </View>
+    {/*   <View style={styles.chartContainer}>
+          <VictoryChart width={350} theme={VictoryTheme.material}>
+            <VictoryLine
+              data={sentimentData}
+              style={{
+                data: {stroke: '#445EE9'},
+                parent: {border: '1px solid #6b717c'},
+              }}
+            />
+             <VictoryAxis
+            dependentAxis={true}
+            style={{
+              grid: { stroke: "#6b717c" }
+            }}
+          />
+            <VictoryAxis 
+            tickFormat={(x) => ``}
+          />
+
+          </VictoryChart>
+        </View> */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  chartContainer: {
+    width: '100%',
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+
+  },
+  chart: {
+    flex: 1,
+  },
   rightView: {
     paddingLeft: 20,
     width: '100%',

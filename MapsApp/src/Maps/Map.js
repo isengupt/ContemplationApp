@@ -1,10 +1,12 @@
 import React, {useEffect, useState, useRef} from 'react';
-import MapView, {PROVIDER_GOOGLE, Callout} from 'react-native-maps';
+import MapView, { Callout} from 'react-native-maps';
 import Meteor from '@meteorrn/core';
 import {View, Text, StyleSheet, StatusBar, Alert, Animated, TouchableHighlight} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {Icon} from 'native-base'
-import { useFocusEffect } from '@react-navigation/native';
+import UntrackedLocationMarker from './UntrackedMarkers'
+import TrackedLocationMarker from './Markers.js'
+
 
 
 const Box = ({
@@ -26,28 +28,10 @@ const Box = ({
     ]}></Animated.View>
 );
 
-const usePulse = (startDelay = 500) => {
-  const scale = useRef(new Animated.Value(1)).current;
 
-  const pulse = () => {
-    Animated.sequence(
-      [
-        Animated.timing(scale, {toValue: 1.0, useNativeDriver: true}),
-        Animated.timing(scale, {toValue: 0.8, useNativeDriver: true}),
-      ],
-      {useNativeDriver: true},
-    ).start(() => pulse());
-  };
-
-  useEffect(() => {
-    const timeout = setTimeout(() => pulse(), startDelay);
-    return () => clearTimeout(timeout);
-  }, []);
-
-  return scale;
-};
 
 function getColors(sentimentValue) {
+  console.log(sentimentValue)
   if (sentimentValue > 0.9) {
     return {backgroundColor: 'rgb(0, 255, 0, 0.3)', borderColor: 'rgb(0, 255, 0, 0.5)'}
   }
@@ -56,6 +40,7 @@ function getColors(sentimentValue) {
     return {backgroundColor: 'rgb(0, 0, 255, 0.3)', borderColor: 'rgb(0, 0, 255, 0.5)'}
   }
   else if (sentimentValue > 0.3 && sentimentValue < 0.6) {
+
     return {backgroundColor: 'rgb(255, 0, 0, 0.3)', borderColor: 'rgb(255, 0, 0, 0.5)'}
   }
   else {
@@ -112,17 +97,18 @@ const Map = ({navigation}) => {
       if (err) {
         console.log(err);
       } else {
+        console.log(res)
        
-        var filteredArr = res.reduce(
+       /*  var filteredArr = res.reduce(
           (s, x) => {
             s[(typeof(x.booksCount) !== 'undefined')].push(x);
             return s;
           },
           {true: [], false: []},
         );
-      
-        setTrackedBenches(filteredArr['true']);
-        setUntrackedBenches(filteredArr['false']);
+       */
+        setTrackedBenches(res['Tracked']);
+        setUntrackedBenches(res['Untracked']);
       }
     });
   };
@@ -164,7 +150,7 @@ useEffect(() => {
           ]);
         } else if (typeof res === 'string') {
           console.log('The res is ', res)
-          navigation.push('books', {
+          navigation.navigate('books', {
             itemId: res,
           });
         }
@@ -172,15 +158,16 @@ useEffect(() => {
     });
   }
 
-  const scale2 = usePulse();
+
 
   return (
     <View style={{flex: 1}}>
       <MapView
         style={{flex: 1}}
-        provider={PROVIDER_GOOGLE}
+  
         ref={mapRef}
         onUserLocationChange={(event) =>
+
           goToInitialLocation({
             latitude: event.nativeEvent.coordinate.latitude,
             longitude: event.nativeEvent.coordinate.longitude,
@@ -198,71 +185,13 @@ useEffect(() => {
   }
         }>
         {trackedBenches &&
-          trackedBenches.map((point) => (
-            <MapView.Marker
-              key={point.mapId}
-              coordinate={{
-                latitude: Number(point.latitude),
-                longitude: Number(point.longitude),
-              }}
-              title={point.title}>
-              <Animated.View style={styles.markerWrap}>
-             
-     
-              {point.timePoints.length > 0 ?
-              <>
-                <Box scale={scale2} colorObj={getColors(point.timePoints[point.timePoints.length - 1 ].score)}/>
-                <View style={{...styles.marker, backgroundColor: getColors(point.timePoints[point.timePoints.length - 1 ].score).backgroundColor }} />
-                </>
-                :
-                <>
-                <Box scale={scale2} colorObj={{backgroundColor: 'transparent', borderColor: 'black'}} />
-
-                <View style={{...styles.marker, backgroundColor: 'black'}} />
-                </>
-                } 
-              </Animated.View>
-
-              <Callout tooltip onPress={() => markerClick(point)}>
-                <View>
-                  <View style={styles.bubble}>
-                  <Text style={styles.bubbleTitle}>{String(point.title).substr(0, 25)}...</Text>
-                  <Text style={styles.blueText}>{point.booksCount} books</Text>
-                  <Text style={styles.blueText}>Go</Text>
-                   
-                    
-                  </View>
-                </View>
-              </Callout>
-            </MapView.Marker>
+          trackedBenches.map((point, index) => (
+            <TrackedLocationMarker key={index} point={point} markerClick={markerClick}/>
+    
           ))}
         {untrackedBenches &&
-          untrackedBenches.map((point) => (
-            <MapView.Marker
-              key={point.place_id}
-              coordinate={{
-                latitude: Number(point.lat),
-                longitude: Number(point.lon),
-              }}
-              title={point.display_name}>
-              {/*      
-             
-            
-          */}
-              <Animated.View style={styles.markerWrap}>
-       
-                <Box scale={scale2} colorObj={{backgroundColor: 'transparent', borderColor: 'black'}} />
-                <View style={{...styles.marker, backgroundColor: 'black'}} />
-              </Animated.View>
-
-              <Callout tooltip onPress={() => markerClick(point)}>
-                <View>
-                  <View style={styles.bubble}>
-                  <Text style={styles.bubbleTitle}>{String(point.display_name).substr(0, 25)}...</Text>
-                  </View>
-                </View>
-              </Callout>
-            </MapView.Marker>
+          untrackedBenches.map((point, index) => (
+            <UntrackedLocationMarker key = {index} point={point} markerClick={markerClick}/>
           ))}
       </MapView>
     </View>

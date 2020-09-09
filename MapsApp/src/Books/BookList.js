@@ -7,6 +7,7 @@ import {
   FlatList,
   Alert,
   Button,
+  Dimensions,
   Modal,
   TouchableHighlight,
   StyleSheet,
@@ -57,6 +58,7 @@ function BookList({route, navigation, listData, locationData}) {
         console.log((datePoint.timeCalculated).getTime())
         data.push({x: (datePoint.timeCalculated).getTime(), y: datePoint.score })
       }) 
+      console.log(data)
       return data
     }
      else {return []}
@@ -85,7 +87,7 @@ function BookList({route, navigation, listData, locationData}) {
   }, [listData]);
 
   function navigateToBook(_id) {
-    navigation.push('book', {
+    navigation.navigate('book', {
       itemId: _id,
     });
   }
@@ -144,7 +146,7 @@ function BookList({route, navigation, listData, locationData}) {
 
               <Text style={styles.BooksNear}>See all</Text>
             </View>
-            <ScrollView horizontal={true}>
+           
               {openItems.length > 0  ? (
                 <FlatList
                   horizontal
@@ -160,7 +162,7 @@ function BookList({route, navigation, listData, locationData}) {
                 <Text style={styles.BooksNear}>No Open Books </Text>
               
               }
-            </ScrollView>
+         
           </View>
 
           <View style={styles.bookContainer}>
@@ -169,7 +171,7 @@ function BookList({route, navigation, listData, locationData}) {
 
               <Text style={styles.BooksNear}>See all</Text>
             </View>
-            <ScrollView horizontal={true}>
+
               {archivedItems.length > 0 ? (
                 <FlatList
                   horizontal
@@ -185,7 +187,7 @@ function BookList({route, navigation, listData, locationData}) {
                 <Text style={styles.BooksNear}>No Archived Books </Text>
               
               }
-            </ScrollView>
+     
           </View>
 
 
@@ -225,9 +227,12 @@ function BookList({route, navigation, listData, locationData}) {
           <VictoryChart width={350} theme={VictoryTheme.material}>
             <VictoryLine
               data={sentimentData}
+              width={Dimensions.get ('window').width - 10}
+              padding={0}
               style={{
                 data: {stroke: '#445EE9'},
-                parent: {border: '1px solid #6b717c'},
+                parent: {border: '1px solid #6b717c',  padding: 0},
+               
               }}
             />
              <VictoryAxis
@@ -250,10 +255,12 @@ function BookList({route, navigation, listData, locationData}) {
 
 const styles = StyleSheet.create({
   chartContainer: {
+    padding: 0,
     width: '100%',
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    alignContent: 'stretch'
 
   },
   chart: {
