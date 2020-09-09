@@ -1,100 +1,284 @@
 import React, {useEffect, useState} from 'react';
 import Meteor, {Mongo, withTracker} from '@meteorrn/core';
-//import Books from '/contemplation-server/imports/api/schema/Books'
-import { View, Button, Text, Dimensions, FlatList, StyleSheet, StatusBar, SafeAreaView } from 'react-native';
-import Paginator from './Paginator';
+import PageForm from './PageForm'
+import {format} from 'date-fns';
+import {
+  View,
+  Button,
+  Text,
+  Dimensions,
+  FlatList,
+  Alert,
+  Modal,
+  TouchableHighlight,
+  StyleSheet,
+  StatusBar,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import {Icon} from 'native-base';
 
-const Books = new Mongo.Collection("Books");
+const Books = new Mongo.Collection('Books');
+var deviceWidth = Dimensions.get('window').width;
+var deviceHeight = Dimensions.get('window').height;
 
+function BookDetail({route, navigation, bookData}) {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [pageData, setPageData] = useState({});
 
-function BookDetail({ route, navigation, bookData }) {
-  const itemWidth = Dimensions.get('window').width;
-  const [pageData, setPageData] = useState(false)
+  console.log(bookData);
+  const {itemId} = route.params;
 
-console.log(bookData)
-  const { itemId } = route.params;
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableHighlight
+        style={styles.closeButton}
+        onPress={() => {
+          navigation.toggleDrawer()
+        }}>
+        <Icon
+          name="menu-outline"
+          style={{color: '#383B41', fontSize: 20}}></Icon>
+      </TouchableHighlight>
+     
+      ),
+    });
+  }, [navigation]);
+
 
   useEffect(() => {
-    setPageData(bookData)
-    console.log('changed')
-  }, [bookData])
-
-  function addPage() {
-
-      navigation.push('addPageForm', {
-        itemId: itemId,
-      })
-  }
-
-  const renderItem = ({ item }) => (
-    <BookInfo item={item} />
-  );
-
-  const BookInfo = ({ item }) => (
-    <View style={{width: itemWidth}}>
-      <Text>{item.content}</Text>
-  
-    </View>
-  );
+    setPageData(bookData);
+    console.log(bookData);
+  }, [bookData]);
 
 
+  const BookInfo = ({item, index}) => {
     return (
-      <View style={{ flex: 1 }}>
-     
-        <Text>Book Id {JSON.stringify(itemId)}</Text>
-        <Button
-          title="Add page"
-          onPress={addPage}
-        />
+      <View key={index} style={styles.item}>
+        <View style={styles.headerText}>
+          <Text style={styles.blueText}>Log {index + 1}</Text>
+          <Text style={styles.datePosted}>
+            {format(item.datePosted, 'MMMM do yyyy H:mm')}
+          </Text>
+        </View>
 
-       {pageData[0] ? 
-
-       <Paginator
-          data={pageData[0].pages}
-          renderItem={renderItem}
-         
-          itemWidth={itemWidth}
-        /> 
-     
-    : <Text>No data</Text>
-       }
-
+        <Text style={styles.content}>{item.content}</Text>
       </View>
     );
+  };
+  const PageItems = ({bookPages}) => {
+    console.log(bookPages)
+    if (Array.isArray(bookPages) && bookPages.length === 0 ) {
+      return (
+      
+      <TouchableHighlight
+      style={styles.openButton}
+      onPress={() => {
+        setModalVisible(true);
+      }}>
+      <Text style={styles.blueText}>Be the first to add a page</Text>
+    </TouchableHighlight>
+      
+      )
+    }
+    else
+    {
+      return (
+        <>
+        <View style={styles.rightView}>
+        <TouchableHighlight
+      style={styles.entriesAdded}
+      onPress={() => {
+        setModalVisible(true);
+      }}>
+      <Text style={styles.blueText}>Add Page</Text>
+    </TouchableHighlight>
+  </View>
+        <View style={styles.container}>
+     
+          <ScrollView
+            horizontal={true}
+            pagingEnabled={true}
+            showsHorizontalScrollIndicator={false}>
+            {bookPages.map((item, index) => (
+              <BookInfo item={item} index={index} />
+            ))}
+          </ScrollView>
+          
+        </View>
+        
+    </>
+      );
+    }
+  
+  };
+
+  return (
+
+    <View style={styles.container}>
+    {Object.keys(pageData).length === 0 ?
+      <Text>Loading</Text>
+      :
+      <PageItems bookPages={pageData.pages} />
+    }
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <TouchableHighlight
+                style={styles.closeButton}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}>
+                <Icon
+                  name="close"
+                  style={{color: '#6b717c', fontSize: 20}}></Icon>
+              </TouchableHighlight>
+              <PageForm itemId={itemId} setModalVisible={setModalVisible} />
+            </View>
+          </View>
+        </Modal>
+
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  rightView: {
+    paddingLeft: 20,
+    width: '100%',
+    textAlign: 'right',
+    alignContent: 'flex-end',
+    alignContent: 'flex-end'
+  },
+  container: {
+    flex: 1,
+
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    backgroundColor: '#fff',
+   
+  },
+  item: {
+    flex: 1,
+
+    padding: 20,
+    flexDirection: 'column',
+    width: deviceWidth,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
+  datePosted: {
+    textTransform: 'uppercase',
+    marginBottom: 5,
+    fontSize: 16,
+  },
+  blueText: {
+    color: '#445EE9',
+    fontSize: 18,
+    marginTop: 20,
+
+    fontWeight: '700',
+
+
+    marginBottom: 5,
+  },
+  headerText: {
+    marginBottom: 40,
+  },
+  content: {
+    
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#383B41',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+   
+    marginTop: 50,
+    width: deviceWidth,
+    height: deviceHeight,
+    backgroundColor: "white",
+    borderRadius: 20,
+ 
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    position: 'relative'
+ 
+  },
+  openButton: {
+  
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  entriesAdded: {
+
+  },
+  closeButton: {
+    elevation: 2,
+    color: '#383B41',
+    position: "absolute",
+    right: 10,
+    top: 10,
+    elevation: 3
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  firstPage: {
+    marginTop: 20,
+    textTransform: 'lowercase',
+    fontWeight: '700',
+    color: '#445EE9',
+    fontSize: 16,
+  },
+  headerContainer: {
+  
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    justifyContent: 'space-between'
   }
+});
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      marginTop: StatusBar.currentHeight || 0,
-    },
-    item: {
-      backgroundColor: '#f9c2ff',
-      padding: 20,
-      marginVertical: 8,
-      marginHorizontal: 16,
-    },
-    title: {
-      fontSize: 32,
-    },
-  });
+const BookDetailContainer = withTracker((props) => {
+  console.log(props.route.params.itemId);
+  const routeId = props.route.params.itemId;
 
-
-
-const BookDetailContainer = withTracker(props => {
-  console.log(props.route.params.itemId)
-  const routeId = props.route.params.itemId
-  const bookDatum = Books.find({}).fetch();
-  console.log(bookDatum)
-
-  const handle = Meteor.subscribe("BooksData", routeId);
+  const handle = Meteor.subscribe('BooksData', routeId);
 
   return {
-      bookData: Books.find({}).fetch(),
-      loading: !handle.ready()
-      
+    bookData: Books.findOne(routeId),
+    loading: !handle.ready(),
   };
-  
 })(BookDetail);
 
-export default BookDetailContainer
+export default BookDetailContainer;

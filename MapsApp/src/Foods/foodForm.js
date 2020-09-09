@@ -8,15 +8,17 @@ import {
   Text,
   TouchableOpacity
 } from 'react-native'
+import {Icon} from 'native-base'
 
 
 
-const FoodForm = ({route, navigation}) =>  {
+const FoodForm = ({route, navigation, itemId}) =>  {
   const [title, setTitle] = useState("")
-  const { itemId } = route.params;
+
 
   function addBook() {
     console.log(title)
+    console.log(itemId)
     const data = {
       title: title,
       datePosted: Date.now(),
@@ -37,19 +39,22 @@ const FoodForm = ({route, navigation}) =>  {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Redux</Text>
+        <Text style={styles.title}>Create a book</Text>
+        <View style={styles.flexrow}>
         <TextInput
           value={title}
-          placeholder='Title'
+          placeholder='Name of the book'
           style={styles.foodInput}
           onChangeText={text => setTitle(text)}
+          multiline={true}
         />
-        <TouchableOpacity
-          style={{ marginBottom: 16 }}
-          onPress={addBook}>
-          <Text style={{ fontSize: 22, color: '#5fc9f8' }}>Submit</Text>
-        </TouchableOpacity>
-  
+     
+    </View>
+    <TouchableOpacity
+    style={styles.submitbutton}
+    onPress={addBook}>
+         <Text style={styles.blueText}>Submit</Text>
+  </TouchableOpacity>
       </View>
     );
   
@@ -57,22 +62,40 @@ const FoodForm = ({route, navigation}) =>  {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    margin: 16,
-    alignItems: 'center',
-    justifyContent: 'center'
+
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    width: 250,
+    position: 'relative' 
   },
   title: {
-    fontSize: 64,
-    marginBottom: 48
+    fontSize: 18,
+    fontWeight: '700',
+ 
+    color: '#383B41',
   },
   foodInput: {
-    fontSize: 32,
-    marginBottom: 32,
-    borderWidth: 1,
-    padding: 8,
-    width: '80%',
-    borderRadius: 10,
+
+    alignItems: 'stretch',
+    fontSize: 16,
+    color: '#383B41',
+    fontWeight: '400',
+    marginBottom: 30,
+  },
+  flexrow: {
+  
+  },
+  submitbutton: {
+    position: "absolute",
+    right: 0,
+    bottom: 0,
+   
+  },
+  blueText: {
+    fontWeight: '700',
+    color: '#445EE9',
+    fontSize: 16,
   }
 });
 

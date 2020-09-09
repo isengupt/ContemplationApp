@@ -18,6 +18,9 @@ target 'MapsApp' do
 
   pod 'react-native-viewpager', :path => '../node_modules/@react-native-community/viewpager'
 
+
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
   target 'MapsAppTests' do
     inherit! :complete
     # Pods for testing

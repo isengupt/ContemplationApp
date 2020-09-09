@@ -65,7 +65,10 @@ const Paginator = ({
       <FlatList
         onScroll={Animated.event([{
           nativeEvent: { contentOffset: { x: scrollValue.current } },
-        }])}
+         
+        }],
+        {useNativeDriver: false}
+        )}
         data={data}
         renderItem={renderItem}
         horizontal
