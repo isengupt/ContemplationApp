@@ -20,8 +20,9 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		D0A5007FECF5D7869DD4472E /* libPods-MapsApp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 381D2FC0506FC7421A28C8EE /* libPods-MapsApp-tvOS.a */; };
 		D9C102300DA0EA09731D3910 /* libPods-MapsApp-MapsAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 210B74D6D0537256EACB7970 /* libPods-MapsApp-MapsAppTests.a */; };
-		FA71F86824F6F5BD0093EC9B /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA71F86724F6F5BD0093EC9B /* Counter.swift */; };
-		FA71F86A24F6F6860093EC9B /* Counter.m in Sources */ = {isa = PBXBuildFile; fileRef = FA71F86924F6F6860093EC9B /* Counter.m */; };
+		FA3B7B1A25096B1900C5B2C2 /* LangParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3B7B1925096B1900C5B2C2 /* LangParser.swift */; };
+		FA3B7B1C25096B9600C5B2C2 /* LangParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3B7B1B25096B9600C5B2C2 /* LangParser.m */; };
+		FA3B7B202509C4F000C5B2C2 /* IMDBReviewClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = FA3B7B1F2509C4F000C5B2C2 /* IMDBReviewClassifier.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,10 @@
 		E80C5029C30C46625E574B2A /* Pods-MapsApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapsApp.debug.xcconfig"; path = "Target Support Files/Pods-MapsApp/Pods-MapsApp.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		FA3B7B1825096B0100C5B2C2 /* MapsApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MapsApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		FA3B7B1925096B1900C5B2C2 /* LangParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LangParser.swift; sourceTree = "<group>"; };
+		FA3B7B1B25096B9600C5B2C2 /* LangParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LangParser.m; sourceTree = "<group>"; };
+		FA3B7B1F2509C4F000C5B2C2 /* IMDBReviewClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = IMDBReviewClassifier.mlmodel; sourceTree = "<group>"; };
 		FA620AFB2504348200AAE7B6 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		FA620AFC2504348200AAE7B6 /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		FA620AFD2504348200AAE7B6 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
@@ -85,9 +90,6 @@
 		FA620B082504348300AAE7B6 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		FA620B092504348300AAE7B6 /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		FA620B0A2504348300AAE7B6 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		FA71F86624F6F5BC0093EC9B /* MapsApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MapsApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		FA71F86724F6F5BD0093EC9B /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
-		FA71F86924F6F6860093EC9B /* Counter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Counter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +148,10 @@
 		13B07FAE1A68108700A75B9A /* MapsApp */ = {
 			isa = PBXGroup;
 			children = (
+				FA3B7B1F2509C4F000C5B2C2 /* IMDBReviewClassifier.mlmodel */,
+				FA3B7B1925096B1900C5B2C2 /* LangParser.swift */,
+				FA3B7B1B25096B9600C5B2C2 /* LangParser.m */,
+				FA3B7B1825096B0100C5B2C2 /* MapsApp-Bridging-Header.h */,
 				FA620AFA2504342800AAE7B6 /* Fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -196,15 +202,12 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				FA71F86924F6F6860093EC9B /* Counter.m */,
-				FA71F86724F6F5BD0093EC9B /* Counter.swift */,
 				13B07FAE1A68108700A75B9A /* MapsApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MapsAppTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				3BDB314FFF3FE4B2ABF58341 /* Pods */,
-				FA71F86624F6F5BC0093EC9B /* MapsApp-Bridging-Header.h */,
 				C0FA06BE554A41ADAAB62D47 /* Resources */,
 			);
 			indentWidth = 2;
@@ -691,10 +694,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA71F86824F6F5BD0093EC9B /* Counter.swift in Sources */,
+				FA3B7B202509C4F000C5B2C2 /* IMDBReviewClassifier.mlmodel in Sources */,
+				FA3B7B1A25096B1900C5B2C2 /* LangParser.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				FA3B7B1C25096B9600C5B2C2 /* LangParser.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				FA71F86A24F6F6860093EC9B /* Counter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -782,6 +786,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				COREML_CODEGEN_LANGUAGE = Swift;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = MapsApp/Info.plist;
@@ -806,6 +811,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				COREML_CODEGEN_LANGUAGE = Swift;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = MapsApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -66,6 +66,7 @@ const SignIn = ({
             <Label style={styles.label}>Password</Label>
             <Input
               style={styles.inputItem}
+              secureTextEntry={true} 
               value={password}
               placeholder="password"
               onChangeText={(text) => setPassword(text)}

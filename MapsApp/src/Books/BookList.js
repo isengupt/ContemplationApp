@@ -15,6 +15,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import { NativeModules } from 'react-native'
 import {Container, Content, Icon} from 'native-base';
 import Geolocation from '@react-native-community/geolocation';
 import {VictoryLine, VictoryAxis, VictoryChart, VictoryTheme} from 'victory-native';
@@ -30,7 +31,11 @@ function BookList({route, navigation, listData, locationData}) {
   const [archivedItems, setArchivedItems] = useState([]);
   const [openItems, setOpenItems] = useState([]);
 
+  console.log(NativeModules.LangParser)
+
   const {itemId} = route.params;
+
+ 
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -38,7 +43,8 @@ function BookList({route, navigation, listData, locationData}) {
         <TouchableHighlight
         style={styles.closeButton}
         onPress={() => {
-          navigation.toggleDrawer()
+          console.log(NativeModules.LangParser.increment())
+         // navigation.toggleDrawer()
         }}>
         <Icon
           name="menu-outline"
@@ -221,13 +227,16 @@ function BookList({route, navigation, listData, locationData}) {
             <View style={styles.subSections}>
               <Text style={styles.subHeading}>Sentiment Chart</Text>
 
-              <Text style={styles.BooksNear}>See all</Text>
+            
+                    <Text style={styles.BooksNear}>See all</Text>
+                 
+             
             </View>
         <View style={styles.chartContainer}>
-          <VictoryChart width={350} theme={VictoryTheme.material}>
+          <VictoryChart theme={VictoryTheme.material}>
             <VictoryLine
               data={sentimentData}
-              width={Dimensions.get ('window').width - 10}
+             
               padding={0}
               style={{
                 data: {stroke: '#445EE9'},

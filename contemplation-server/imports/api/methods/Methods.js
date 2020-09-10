@@ -279,7 +279,20 @@ Meteor.methods({
 
   addPage: function (data, _id) {
     if (this.userId) {
-      const updatedData = run([String(data.content)]).then((event) => {
+      function compileData(data) {
+        Profiles.update(
+          { userId: this.userId },
+          { $push: { posts: { post: data.content, timePosted: Date.now() } } }
+        );
+
+        Books.update({ _id: _id }, { $push: { pages: data } });
+
+        const bookInfoScore = updateBook(_id, data);
+
+        return bookInfoScore;
+      }
+      const updatedScore = compileData(data)
+     /*  const updatedData = run([String(data.content)]).then((event) => {
         Profiles.update(
           { userId: this.userId },
           { $push: { posts: { post: data.content, timePosted: Date.now() } } }
@@ -292,9 +305,9 @@ Meteor.methods({
         const bookInfoScore = updateBook(_id, data);
 
         return bookInfoScore;
-      });
+      }); */
 
-      return updatedData;
+      return updatedScore;
     } else {
       return { header: "Must Log In" };
     }

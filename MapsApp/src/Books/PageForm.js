@@ -6,6 +6,7 @@ import {
   TextInput,
   Text,
   TouchableOpacity,
+  NativeModules,
   Image
 } from 'react-native';
 import {Input} from 'native-base';
@@ -15,19 +16,35 @@ const PageForm = ({route, navigation, itemId, setModalVisible}) => {
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false)
 
+  const getSentiment = async (data) => {
+    const response = await NativeModules.LangParser.getSentiment(data);
+    console.log(response); 
+    return response
+  };
+
 
   function addPage() {
     setLoading(true)
-    console.log(itemId);
-    console.log(content);
-    var data = {
-      datePosted: Date.now(),
-    };
-    data['content'] = content;
+  
 
-    console.log(data);
+    getSentiment(content).then((res) => {
+      console.log({content: content, datePosted: Date.now(), score: res})
+      const data = {content: content, datePosted: Date.now(), score: res}
+      Meteor.call('addPage', data, itemId, async function (err, res) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(res);
+          setLoading(false)
+          setContent('');
+          setModalVisible(false)
+          
+        }
+      })
+    })
+   
 
-    Meteor.call('addPage', data, itemId, async function (err, res) {
+   /*  Meteor.call('addPage', data, itemId, async function (err, res) {
       if (err) {
         console.log(err);
       } else {
@@ -37,7 +54,7 @@ const PageForm = ({route, navigation, itemId, setModalVisible}) => {
         setModalVisible(false)
         
       }
-    });
+    }); */
   }
 
  

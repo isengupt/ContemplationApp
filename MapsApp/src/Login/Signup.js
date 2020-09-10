@@ -67,6 +67,7 @@ const Signup = ({
             <Input
               style={styles.inputItem}
               value={password}
+              secureTextEntry={true} 
               placeholder="password"
               onChangeText={(text) => setPassword(text)}
             />
@@ -78,7 +79,7 @@ const Signup = ({
 
 <Item
             floatingLabel
-            success={password.length > 5}
+            success={confirmPassword.length > 5}
             style={
               confirmPassword.length > 5 ? styles.inputBorderGreen : styles.inputs
             }>
@@ -86,7 +87,8 @@ const Signup = ({
             <Input
               style={styles.inputItem}
               value={confirmPassword}
-              placeholder="password"
+              secureTextEntry={true} 
+              placeholder="confirm password"
               onChangeText={(text) => setConfirmPassword(text)}
             />
             <Icon
