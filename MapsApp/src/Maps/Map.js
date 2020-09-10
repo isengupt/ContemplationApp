@@ -32,14 +32,14 @@ const Box = ({
 
 function getColors(sentimentValue) {
   console.log(sentimentValue)
-  if (sentimentValue > 0.9) {
+  if (sentimentValue > 0.5) {
     return {backgroundColor: 'rgb(0, 255, 0, 0.3)', borderColor: 'rgb(0, 255, 0, 0.5)'}
   }
-  else if (sentimentValue > 0.6 && sentimentValue < 0.9)
+  else if (sentimentValue > 0 && sentimentValue < 0.5)
   {
     return {backgroundColor: 'rgb(0, 0, 255, 0.3)', borderColor: 'rgb(0, 0, 255, 0.5)'}
   }
-  else if (sentimentValue > 0.3 && sentimentValue < 0.6) {
+  else if (sentimentValue > -0.5 && sentimentValue < 0) {
 
     return {backgroundColor: 'rgb(255, 0, 0, 0.3)', borderColor: 'rgb(255, 0, 0, 0.5)'}
   }
