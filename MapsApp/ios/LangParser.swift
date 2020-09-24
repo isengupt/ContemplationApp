@@ -19,7 +19,7 @@ class LangParser: NSObject {
 
   
  let tagger = NLTagger(tagSchemes: [.sentimentScore])
-  
+
  @objc
   func constantsToExport() -> [AnyHashable : Any]! {
     return ["initialCount": 0]
@@ -59,13 +59,47 @@ class LangParser: NSObject {
   @objc
    func getSentiment(_ text: String,  resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
      let tagger = NLTagger(tagSchemes: [.sentimentScore])
+    
+    let tokenizer = NLTokenizer(unit: .sentence)
+    let words = NLTokenizer(unit: .word)
     tagger.string = text
+    tokenizer.string = text
+    
+
+    
+
     
 let (sentiment, _) = tagger.tag(at: text.startIndex, unit: .paragraph, scheme: .sentimentScore)
+    var arrayOfStrings: [NSDictionary] = []
+    tokenizer.enumerateTokens(in: text.startIndex..<text.endIndex) { tokenRange, _ in
+        print(text[tokenRange])
+       let tagger = NLTagger(tagSchemes: [.sentimentScore])
+      tagger.string = String(text[tokenRange])
+      let (sentiment, _) = tagger.tag(at: String(text[tokenRange]).startIndex, unit: .paragraph, scheme: .sentimentScore)
+      let score = Double(sentiment?.rawValue ?? "0") ?? 0
+      let dictionary: NSDictionary = [
+           "score" : score,
+           "texts" : String(text[tokenRange])
+      
+       ]
+      arrayOfStrings.append(dictionary)
+      return true
+        
+        
+    }
+    
+    
     
   let score = Double(sentiment?.rawValue ?? "0") ?? 0
     
-     resolve(score)
+
+   let dictionary: NSDictionary = [
+       "score" : score,
+       "texts" : arrayOfStrings,
+       "fullText": text
+  
+   ]
+    resolve(dictionary)
    }
   
  @objc

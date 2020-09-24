@@ -25,11 +25,13 @@ const PageForm = ({route, navigation, itemId, setModalVisible}) => {
 
   function addPage() {
     setLoading(true)
+    console.log(content)
+
   
 
-    getSentiment(content).then((res) => {
+      getSentiment(content).then((res) => {
       console.log({content: content, datePosted: Date.now(), score: res})
-      const data = {content: content, datePosted: Date.now(), score: res}
+      const data = {content: content, datePosted: Date.now(), score: res.score, sentences: res.texts}
       Meteor.call('addPage', data, itemId, async function (err, res) {
         if (err) {
           console.log(err);
@@ -41,7 +43,7 @@ const PageForm = ({route, navigation, itemId, setModalVisible}) => {
           
         }
       })
-    })
+    }) 
    
 
    /*  Meteor.call('addPage', data, itemId, async function (err, res) {

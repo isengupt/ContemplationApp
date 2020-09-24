@@ -24,6 +24,42 @@ const Books = new Mongo.Collection('Books');
 var deviceWidth = Dimensions.get('window').width;
 var deviceHeight = Dimensions.get('window').height;
 
+function getColors(sentimentValue) {
+  console.log(sentimentValue)
+  if (sentimentValue > 0.5) {
+    return {backgroundColor: 'rgba(0,255,0,0.7)',
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#383B41',
+  }
+  }
+  else if (sentimentValue > 0 && sentimentValue < 0.5)
+  {
+    return {backgroundColor: 'rgba(0,0,255,0.7)',
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#383B41', }
+  }
+  else if (sentimentValue > -0.5 && sentimentValue < 0) {
+
+    return {backgroundColor: 'rgba(255,0,0,0.7)',
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#383B41', }
+  }
+  else {
+    return {backgroundColor: 'rgba(0,0,0,0.3)',
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#383B41',
+  }
+  }
+}
+
+function getSize(count) {
+  return {fontSize: Number(count) * 10}
+}
+
 function BookDetail({route, navigation, bookData}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [pageData, setPageData] = useState({});
@@ -87,7 +123,12 @@ function BookDetail({route, navigation, bookData}) {
           </Text>
         </View>
 
-        <Text style={styles.content}>{item.content}</Text>
+ 
+        <Text>
+        {item.sentences.map((sentence) => 
+          <Text style={getColors(sentence.score)}>{sentence.texts}</Text>
+        )}
+        </Text>
       </View>
     );
   };
@@ -128,6 +169,33 @@ function BookDetail({route, navigation, bookData}) {
             {bookPages.map((item, index) => (
               <BookInfo item={item} index={index} />
             ))}
+            <View style={styles.itemMiddle}>
+            {bookData.wordCloud.map((item) => 
+            <Text style={getSize(item.count)}>{item.word}</Text>
+            )}
+            </View>
+            <View style={styles.chartContainer}>
+            <Text style={styles.blueTextPad}>Sentiment Data</Text>
+          <VictoryChart width={350} theme={VictoryTheme.material}>
+            <VictoryLine
+              data={sentimentData}
+              style={{
+                data: {stroke: '#445EE9'},
+                parent: {border: '1px solid #6b717c'},
+              }}
+            />
+             <VictoryAxis
+            dependentAxis={true}
+            style={{
+              grid: { stroke: "#6b717c" }
+            }}
+          />
+            <VictoryAxis 
+            tickFormat={(x) => ``}
+          />
+
+          </VictoryChart>
+        </View> 
           </ScrollView>
           
         </View>
@@ -198,10 +266,12 @@ function BookDetail({route, navigation, bookData}) {
 
 const styles = StyleSheet.create({
   chartContainer: {
-    width: '100%',
+    width: deviceWidth,
+    padding: 0,
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    alignItems: 'stretch',
+    
 
   },
   chart: {
@@ -232,6 +302,15 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
+  itemMiddle: {
+    flex: 1,
+
+    padding: 20,
+    flexDirection: 'column',
+    width: deviceWidth,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   datePosted: {
     textTransform: 'uppercase',
     marginBottom: 5,
@@ -242,6 +321,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 20,
 
+    fontWeight: '700',
+
+
+    marginBottom: 5,
+  },
+  blueTextPad: {
+    color: '#445EE9',
+    fontSize: 18,
+    marginTop: 20,
+    paddingLeft: 20,
     fontWeight: '700',
 
 

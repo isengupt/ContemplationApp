@@ -3,10 +3,12 @@ import { Coordinates } from "../schema/Coordinates";
 import { Books } from "../schema/Books";
 import { Profiles } from "../schema/Profiles";
 
-const tf = require("@tensorflow/tfjs");
-require("@tensorflow/tfjs-node");
+
 const fetch = require("node-fetch");
 const axios = require("axios");
+var natural = require('natural');
+
+var tokenizer = new natural.WordTokenizer();
 var distanceLimit = 10000;
 
 function getDistanceFromLatLng(lat1, lng1, lat2, lng2) {
@@ -284,8 +286,31 @@ Meteor.methods({
           { userId: this.userId },
           { $push: { posts: { post: data.content, timePosted: Date.now() } } }
         );
+        
+        
+        console.log(tokenizer.tokenize(data.content))
+        let newWords = tokenizer.tokenize(data.content)
+        console.log (Books.findOne({_id: _id}).wordCloud)
+        let wordCloud = Books.findOne({_id: _id}).wordCloud
+        for (word of newWords) {
+          let found = false
+         for (item of wordCloud) {
+           if (item.word == String(word).toLowerCase()) {
+           item.count += 1
+             found = true;
+             continue;
+           }
 
-        Books.update({ _id: _id }, { $push: { pages: data } });
+         }
+         if (found == false) {
+            wordCloud.push({word: String(word).toLowerCase(), count: 1})
+         }
+
+        }
+        console.log(wordCloud)
+
+     
+        Books.update({ _id: _id }, { $push: { pages: data }, $set: {wordCloud: wordCloud}  });
 
         const bookInfoScore = updateBook(_id, data);
 

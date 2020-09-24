@@ -5,11 +5,41 @@ import {Tracker} from 'meteor/tracker'
 
 const Books = new Mongo.Collection("Books")
 
+const SentenceSchema = new SimpleSchema({
+    texts: {
+        type: String,
+        label: "The sentence string"
+    },
+    score: {
+        type: Number, 
+        label: "The sentiment score of the individual sentence"
+    }
+})
+
+const MainPoints = new SimpleSchema({
+    word: {
+        type: String,
+        label: "The word logged in the sentence"
+    },
+    count: {
+        type: Number,
+        label: "Amount of times the word appears in the text"
+    }
+})
+
 const BookEntries = new SimpleSchema({
    
     content: {
         type: String,
         label: "The entry / content in the book"
+    },
+    sentences: {
+        type: Array,
+        label: "Sentiment score of each sentence"
+    },
+    'sentences.$': {
+        type: SentenceSchema,
+        label: "Array of sentences"
     },
     datePosted: {
         type: Date,
@@ -25,7 +55,7 @@ const BookEntries = new SimpleSchema({
         defaultValue: []
     },
     'mainPoints.$': {
-        type: String,
+        type: MainPoints,
         label: "The main points in entry for semantic similarity"
     
     }
@@ -55,6 +85,16 @@ const TimeEntries = new SimpleSchema({
     },
 })
 
+const wordItems = new SimpleSchema({
+    word: {
+        type: String,
+        label: "The word value for the dictionary"
+    },
+    count: {
+        type: Number,
+        label: "Amount of times word was found"
+    }
+})
 
 
 const BooksSchema = new SimpleSchema({
@@ -101,6 +141,18 @@ const BooksSchema = new SimpleSchema({
         allowedValues: ['Open', 'Archived'],
         defaultValue: 'Open'
       },
+    wordCloud: {
+        type: Array,
+        label: "Dictionary of words by count",
+        defaultValue: []
+    
+    },
+    'wordCloud.$': {
+        type: wordItems,
+        label: "Dictionary of words"
+    }
+  
+
 }, {tracker: Tracker})
 
 
