@@ -8,3 +8,4 @@ Books can be anonymously written in and on each page addition, sentiment and wor
 ![Test Image 5](screen5.png)
 ![Test Image 6](screen6.png)
 ![Test Image 7](screen7.png)
+![Test Image 7](screen8.png)
